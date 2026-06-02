@@ -590,11 +590,12 @@ body { min-width: 0 !important; }
 
 /* Thème 2 (UPS) : surfaces or + arêtes brun */
 html.theme-ups .box-face {
-    fill: #d4880a;        /* UPS gold */
-    fill-opacity: 0.80;
+    fill: #d4880a;
+    fill-opacity: 0.40;   /* 0.80 × 0.5 */
 }
 html.theme-ups .icone-colis-wrapper svg {
-    stroke: #351c15;      /* UPS brown */
+    stroke: #6b3a2a;
+    stroke-opacity: 0.50; /* arêtes 50 % plus transparentes */
 }
 
 /* Contexte 3D – l'animation est déclenchée individuellement par JS via .rotate-3d--active */

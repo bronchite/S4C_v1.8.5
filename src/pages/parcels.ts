@@ -83,11 +83,11 @@ function attachPoidsThemeObserver(): void {
 /** Couleurs des formes selon le thème actif */
 function getPoidsColors() {
   if (document.documentElement.classList.contains('theme-ups')) {
-    // Thème UPS : cercle or, triangle brun — triangle 50 % plus transparent (0.55 × 0.5 = 0.275)
-    return { cF: '#d4880a', cS: '#b5720a', tF: '#351c15', tS: '#6b3a2a', lC: '#b5720a', lT: '#4a2010', tAlpha: 0.275 };
+    // Thème UPS : cercle or, triangle brun — cercle et triangle 50 % plus transparents
+    return { cF: '#d4880a', cS: '#b5720a', tF: '#351c15', tS: '#6b3a2a', lC: '#b5720a', lT: '#4a2010', cAlpha: 0.43, tAlpha: 0.14 };
   }
   // Thème par défaut : cercle blanc pur + contour bleu, triangle bleu très clair
-  return { cF: '#ffffff', cS: '#93c5fd', tF: '#bfdbfe', tS: '#3b82f6', lC: '#1d4ed8', lT: '#1e40af', tAlpha: 0.55 };
+  return { cF: '#ffffff', cS: '#93c5fd', tF: '#bfdbfe', tS: '#3b82f6', lC: '#1d4ed8', lT: '#1e40af', cAlpha: 0.85, tAlpha: 0.55 };
 }
 
 /**
@@ -146,7 +146,7 @@ function drawPoidsFrame(
   // ── Cercle (poids réel) ───────────────────────────────────────────────────
   ctx.beginPath();
   ctx.arc(cx, cy, PA_R * scale, 0, 2 * Math.PI);
-  ctx.globalAlpha = 0.85; ctx.fillStyle   = col.cF; ctx.fill();
+  ctx.globalAlpha = col.cAlpha; ctx.fillStyle   = col.cF; ctx.fill();
   ctx.globalAlpha = 1;    ctx.strokeStyle = col.cS;
   ctx.lineWidth = 2; ctx.stroke();
 

@@ -1,0 +1,62 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]      # Lance le déploiement à chaque push sur main
+  workflow_dispatch:       # Permet de déclencher manuellement depuis GitHub
+
+# Permissions nécessaires pour publier sur GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Un seul déploiement à la fois
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 1. Récupère le code source
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Installe Node.js avec cache npm
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      # 3. Installe les dépendances (npm ci = installation propre reproductible)
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Compile le projet (vite build → dossier dist/)
+      #    Les variables Supabase sont injectées depuis les Secrets du dépôt.
+      #    → Réglage : Settings > Secrets and variables > Actions > New secret
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+
+      # 5-7. Publie dist/ sur GitHub Pages
+      - name: Configure Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist          # Seul le dossier compilé est déployé, pas le source
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

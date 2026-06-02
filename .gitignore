@@ -1,0 +1,27 @@
+# Dépendances
+node_modules/
+
+# Build Vite (généré automatiquement par GitHub Actions)
+dist/
+
+# Variables d'environnement – NE JAMAIS committer ce fichier !
+# Utiliser GitHub Secrets à la place (Settings > Secrets and variables > Actions)
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+
+# Éditeurs
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+.DS_Store
+Thumbs.db
